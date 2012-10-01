@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: default
+# Recipe:: ruby_from_package
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,10 +19,8 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
+Array(node['razor']['ruby_system_packages']).each do |pkg|
+  package pkg
+end
 
-include_recipe 'razor::mongodb'
-include_recipe 'razor::nodejs'
-include_recipe 'razor::ruby_from_package'
-include_recipe 'razor::app'
+# gem_package "bundler"

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: default
+# Recipe:: app
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,10 +19,22 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
+install_path  = node['razor']['install_path']
+git_url       = node['razor']['app']['git_url']
+git_rev       = node['razor']['app']['git_rev']
+bundle_cmd    = node['razor']['bundle_cmd']
+npm_cmd       = node['razor']['npm_cmd']
 
-include_recipe 'razor::mongodb'
-include_recipe 'razor::nodejs'
-include_recipe 'razor::ruby_from_package'
-include_recipe 'razor::app'
+git install_path do
+  repository  git_url
+  revision    git_rev
+  action      :sync
+end
+
+# execute "#{bundle_cmd} install" do
+#   cwd install_path
+# end
+
+Array(node['razor']['npm_packages']).each do |npm_pkg|
+  execute "#{npm_cmd} install #{npm_pkg}"
+end
