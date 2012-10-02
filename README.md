@@ -189,11 +189,12 @@ limitations under the License.
 [build_essential_cb]: http://community.opscode.com/cookbooks/build-essential
 [chef_repo]:    https://github.com/opscode/chef-repo
 [cheffile]:     https://github.com/applicationsonline/librarian/blob/master/lib/librarian/chef/templates/Cheffile
-[git]:          http://community.opscode.com/cookbooks/git
+[git_cb]:       http://community.opscode.com/cookbooks/git
 [kgc]:          https://github.com/websterclay/knife-github-cookbooks#readme
 [librarian]:    https://github.com/applicationsonline/librarian#readme
-[mongodb]:      http://community.opscode.com/cookbooks/mongodb
-[nodejs]:       http://community.opscode.com/cookbooks/nodejs
+[mongodb_cb]:   http://community.opscode.com/cookbooks/mongodb
+[nodejs_cb]:    http://community.opscode.com/cookbooks/nodejs
 
+[fnichol]:      https://github.com/fnichol
 [repo]:         https://github.com/fnichol/chef-user
 [issues]:       https://github.com/fnichol/chef-user/issues
