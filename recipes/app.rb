@@ -19,11 +19,14 @@
 # limitations under the License.
 #
 
-install_path  = node['razor']['install_path']
-git_url       = node['razor']['app']['git_url']
-git_rev       = node['razor']['app']['git_rev']
-bundle_cmd    = node['razor']['bundle_cmd']
-npm_cmd       = node['razor']['npm_cmd']
+bind_address      = node['razor']['bind_address']
+install_path      = node['razor']['install_path']
+git_url           = node['razor']['app']['git_url']
+git_rev           = node['razor']['app']['git_rev']
+bundle_cmd        = node['razor']['bundle_cmd']
+npm_cmd           = node['razor']['npm_cmd']
+mongodb_address   = node['razor']['mongodb_address']
+checkin_interval  = node['razor']['checkin_interval']
 
 git install_path do
   repository  git_url
@@ -39,4 +42,44 @@ Array(node['razor']['npm_packages']).each do |npm_pkg|
   execute "#{npm_cmd} install #{npm_pkg}" do
     cwd install_path
   end
+end
+
+directory "/usr/local/bin" do
+  recursive true
+end
+
+template "/usr/local/bin/razor" do
+  source  "razor_bin.erb"
+  mode    "0755"
+  variables({
+    :directory => install_path
+  })
+end
+
+template ::File.join(install_path, %w[conf razor_server.conf]) do
+  source  "razor_server.conf.erb"
+  mode    "0755"
+  variables({
+    :address              => bind_address,
+    :persist_host         => mongodb_address,
+    :directory            => install_path,
+    :mk_checkin_interval  => checkin_interval
+  })
+
+  notifies :restart, "service[razor]"
+end
+
+template "/etc/init.d/razor" do
+  source  "razor.erb"
+  mode    "0755"
+  variables({
+    :directory => install_path
+  })
+
+  notifies :restart, "service[razor]"
+end
+
+service "razor" do
+  supports  :status => true, :restart => true, :reload => false
+  action    [ :enable, :start ]
 end
