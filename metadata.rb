@@ -10,6 +10,7 @@ supports "ubuntu"
 
 depends "build-essential"
 depends "git"
+depends "tftp"
 depends "mongodb"
 depends "nodejs"
 

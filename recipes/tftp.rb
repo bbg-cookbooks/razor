@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: default
+# Recipe:: tftp
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,12 +19,4 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
-
-include_recipe 'razor::tftp'
-include_recipe 'razor::tftp_files'
-include_recipe 'razor::mongodb'
-include_recipe 'razor::nodejs'
-include_recipe 'razor::ruby_from_package'
-include_recipe 'razor::app'
+include_recipe "tftp"

@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: default
+# Recipe:: tftp_files
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,12 +19,28 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
+tftp_root = node['tftp']['directory']
 
-include_recipe 'razor::tftp'
-include_recipe 'razor::tftp_files'
-include_recipe 'razor::mongodb'
-include_recipe 'razor::nodejs'
-include_recipe 'razor::ruby_from_package'
-include_recipe 'razor::app'
+directory ::File.join(tftp_root, "pxelinux.cfg") do
+  mode "0755"
+end
+
+%w[
+  ipxe.iso
+  ipxe.lkrn
+  menu.c32
+  pxelinux.0
+  undionly.kpxe
+  pxelinux.cfg/default
+].each do |tftp_file|
+  cookbook_file ::File.join(tftp_root, tftp_file) do
+    source  tftp_file
+  end
+end
+
+template ::File.join(tftp_root, "razor.ipxe") do
+  source  "razor.ipxe.erb"
+  variables({
+    :address => node['razor']['bind_address']
+  })
+end
