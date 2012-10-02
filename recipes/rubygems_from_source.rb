@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: app
+# Recipe:: rubygems_from_source
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,24 +19,27 @@
 # limitations under the License.
 #
 
-install_path  = node['razor']['install_path']
-git_url       = node['razor']['app']['git_url']
-git_rev       = node['razor']['app']['git_rev']
-bundle_cmd    = node['razor']['bundle_cmd']
-npm_cmd       = node['razor']['npm_cmd']
+src_version = node['razor']['rubygems_source']['version']
+src_url     = node['razor']['rubygems_source']['url']
+tar_file    = ::File.join(Chef::Config[:file_cache_path], src_url.split("/").last)
+src_dir     = tar_file.sub(/\.tgz/, '')
 
-git install_path do
-  repository  git_url
-  revision    git_rev
-  action      :sync
+remote_file tar_file do
+  source src_url
 end
 
-execute "#{bundle_cmd} install" do
-  cwd install_path
+directory src_dir do
+  mode      '0755'
+  recursive true
 end
 
-Array(node['razor']['npm_packages']).each do |npm_pkg|
-  execute "#{npm_cmd} install #{npm_pkg}" do
-    cwd install_path
-  end
+execute "Extracting #{tar_file} to #{src_dir}" do
+  command "tar -xzf #{tar_file} --strip-components=1 -C #{src_dir}"
+  creates ::File.join(src_dir, "setup.rb")
+end
+
+execute "Installing rubygems-#{src_version}" do
+  cwd     src_dir
+  command "ruby setup.rb --no-format-executable"
+  creates "/usr/bin/gem"
 end

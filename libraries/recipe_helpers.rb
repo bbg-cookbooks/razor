@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: nodejs
+# Library:: recipe_helpers
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,6 +19,12 @@
 # limitations under the License.
 #
 
-node.default['nodejs']['install_method'] = 'package'
-
-include_recipe 'nodejs'
+class Chef
+  module Razor
+    module RecipeHelpers
+      def lucid?
+        node['platform'] == "ubuntu" && node['platform_version'] == "10.04"
+      end
+    end
+  end
+end

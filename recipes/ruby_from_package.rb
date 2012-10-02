@@ -19,8 +19,13 @@
 # limitations under the License.
 #
 
+# mixin helpers for this recipe
+self.extend(Chef::Razor::RecipeHelpers)
+
 Array(node['razor']['ruby_system_packages']).each do |pkg|
   package pkg
 end
 
-# gem_package "bundler"
+include_recipe "razor::rubygems_from_source" if lucid?
+
+gem_package "bundler"

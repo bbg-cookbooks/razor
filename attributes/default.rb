@@ -22,19 +22,27 @@
 def ruby_system_packages
   case node['platform']
   when 'ubuntu'
+    pkgs  = %w[ openssl libreadline6 libreadline6-dev
+                zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev
+                sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev
+                ncurses-dev automake libtool bison ssl-cert ]
     case node['platform_version']
-    when '10.04' then %w[ruby rubygems]
-    when '12.04' then %w[ruby1.9.3]
+    when '10.04' then %w[ ruby ruby-dev ] + pkgs
+    when '12.04' then %w[ ruby1.9.1 ruby1.9.1-dev ] + pkgs
     end
   end
 end
 
-default['razor']['ruby_system_packages']  = Array(ruby_system_packages)
+default['razor']['ruby_system_packages']  = ruby_system_packages
 default['razor']['npm_packages']          = %w[express@2.5.11 mime]
 default['razor']['install_path']          = '/opt/razor'
+
 default['razor']['bundle_cmd']            = 'bundle'
 default['razor']['npm_cmd']               = 'npm'
+
 default['razor']['app']['git_url']        = 'https://github.com/puppetlabs/Razor.git'
 default['razor']['app']['git_rev']        = 'master'
 
-default['nodejs']['install_method'] = 'package'
+default['razor']['rubygems_source']['version'] = src_version = "1.8.24"
+default['razor']['rubygems_source']['url']     =
+  "http://files.rubyforge.vm.bytemark.co.uk/rubygems/rubygems-#{src_version}.tgz"
