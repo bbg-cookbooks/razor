@@ -13,5 +13,3 @@ depends "git"
 depends "tftp"
 depends "mongodb"
 depends "nodejs"
-
-depends "rvm"
