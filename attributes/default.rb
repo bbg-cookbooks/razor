@@ -27,7 +27,7 @@ def ruby_system_packages
                 sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev
                 ncurses-dev automake libtool bison ssl-cert ]
     case node['platform_version']
-    when '10.04' then %w[ ruby ruby-dev ] + pkgs
+    when '10.04' then %w[ ruby ruby-dev libopenssl-ruby1.8 ] + pkgs
     when '12.04' then %w[ ruby1.9.1 ruby1.9.1-dev ] + pkgs
     end
   end
