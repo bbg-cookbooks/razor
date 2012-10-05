@@ -2,11 +2,18 @@
 
 ## <a name="description"></a> Description
 
-...coming soon...
+Chef cookbook to install and manage [Razor][razor_site], a power control,
+provisioning, and management application designed to deploy both bare-metal
+and virtual computer resources. An LWRP is provided to manage OS and
+micro kernel images.
 
 ## <a name="usage"></a> Usage
 
-...coming soon...
+Include `recipe[razor]` in your run\_list to install the Razor service and its
+dependencies. If you wish to modify or alter the details of the installation
+(i.e. using a different mongodb cookbook, installing nodejs from source, etc.),
+then compose a custom run\_list of the child recipes described
+[below](#recipes).
 
 ## <a name="requirements"></a> Requirements
 
@@ -28,6 +35,7 @@ This cookbook depends on the following external cookbooks:
 
 * [build-essential][build_essential_cb]
 * [git][git_cb]
+* [tftp][tftp_cb]
 * [mongodb][mongodb_cb]
 * [nodejs][nodejs_cb]
 
@@ -95,70 +103,234 @@ Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
 
 ...coming soon...
 
-
 ## <a name="recipes"></a> Recipes
 
 ### <a name="recipes-default"></a> default
 
+Installs the full Razor stack with all dependencies.
 
+Most users will want to use this recipe.
+
+### <a name="recipes-tftp"></a> tftp
+
+Installs a tftp server. This recipe is included in the
+[default](#recipes-default) recipe.
+
+### <a name="recipes-tftp-files"></a> tftp_files
+
+Installs files and configuration needed for PXE booting and Razor
+bootstraping. This recipe is included in the [default](#recipes-default)
+recipe.
 
 ### <a name="recipes-mongodb"></a> mongodb
 
-
+Installs a MongoDB server (from packages). This recipe is included in the
+[default](#recipes-default) recipe.
 
 ### <a name="recipes-nodejs"></a> nodejs
 
+Installs Node.js and npm (from packages). This recipe is included in the
+[default](#recipes-default) recipe.
 
+### <a name="recipes-ruby-from-package"></a> ruby_from_package
 
-### <a name="recipes-ruby-from-package"></a> ruby-from-package
+Installs Ruby (from system packages) and the Bundler gem. This recipe is
+included in the [default](#recipes-default) recipe.
 
+### <a name="recipes-rubygems-from-source"></a> rubygems_from_source
 
+Installs Rubygems from source on older Debian/Ubuntu platforms that ship a
+crippled Rubygems package. This recipe is included in the
+[ruby_from_package](#recipes-ruby-from-package) recipe and will only be used
+on Ubuntu 10.04 nodes.
 
 ### <a name="recipes-app"></a> app
 
-
+Installs and configures the Razor codebase and service. This recipe is
+included in the [default](#recipes-default) recipe.
 
 ## <a name="attributes"></a> Attributes
 
+### <a name="attributes-bind-address"></a> bind_address
+
+IP address to which the Razor web services are bound.
+
+The default is set to `node['ipaddress']`.
+
+### <a name="attributes-mongodb-address"></a> mongodb_address
+
+IP address which has a running MongoDB service.
+
+The default is `"127.0.0.1"`.
+
+### <a name="attributes-checkin-interval"></a> checkin_interval
+
+The micro kernel checkin interval in seconds.
+
+The default is `60`.
+
 ### <a name="attributes-ruby-system-packages"></a> ruby_system_packages
 
-
+An Array of system packages which will install the Ruby runtime. The
+defaults are set automatically based on platform and platform_version but
+can be overridden in needed.
 
 ### <a name="attributes-npm-packages"></a> npm_packages
 
-
+An Array of npm packages to be installed. The defaults are set automatically
+but can be overridden in needed.
 
 ### <a name="attributes-install-path"></a> install_path
 
+The install base path of the Razor codebase.
 
+The default is `"/opt/razor"`.
 
 ### <a name="attributes-bundle-cmd"></a> bundle_cmd
 
+The bundle command which will be used to install Ruby gems.
 
+The default is `"bundle"` (using `$PATH` lookup).
 
 ### <a name="attributes-npm-cmd"></a> npm_cmd
 
+The npm command which will be used to install npm packages.
 
+The default is `"npm"` (using `$PATH` lookup).
 
 ### <a name="attributes-app-git-url"></a> app/git_url
 
+The Git URL for the Razor codebase.
 
+The default is `"https://github.com/puppetlabs/Razor.git"`.
 
 ### <a name="attributes-app-git-rev"></a> app/git_rev
 
+The Git reference/branch to check out.
 
+The default is `"0.7.0"`. Valid values could be Git SHA hashes, branch names,
+and `"master"` for tracking development.
 
 ### <a name="attributes-rubygems-source-version"></a> rubygems_source/version
 
+The version of Rubygems to be compiled (when necessary).
 
+The default is `"1.8.24"`.
 
 ### <a name="attributes-rubygems-source-url"></a> rubygems_source/url
 
+The URL containing Rubygems source which will be compiled (when necessary).
 
+The default is set based on the Rubygems version attribute above.
 
 ## <a name="lwrps"></a> Resources and Providers
 
-There are **no** resources and providers in this cookbook.
+### <a name="lwrps-image"></a> razor_image
+
+#### <a name="lwrps-image-actions"></a> Actions
+
+<table>
+  <thead>
+    <tr>
+      <th>Action</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>add</td>
+      <td>Add the microkernel or operating system image to razor.</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+#### <a name="lwrps-image-attributes"></a> Attributes
+
+<table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Default Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>name</td>
+      <td>
+        <b>Name attribute:</b> The logical name to use for the image.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>
+        The type of image. Valid values are <code>"mk"</code> for micro kernel
+        images and <code>"os"</code> for operating system images.
+      </td>
+      <td><code>"os"</code></td>
+    </tr>
+    <tr>
+      <td>url</td>
+      <td>
+        HTTP URL containing the image ISO.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>version</td>
+      <td>
+        The version to use for <code>"os"</code> images only.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+    <tr>
+      <td>checksum</td>
+      <td>
+        An optional SHA-256 checksum for the ISO (for added verification).
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+  </tbody>
+</table>
+
+#### <a name="lwrps-image-examples"></a> Examples
+
+##### Adding A Micro Kernel Image
+
+    razor_image "rz_mk_prod-image.0.9.1.6" do
+      type      "mk"
+      url       "http://mirror.example.com/images/rz_mk_prod-image.0.9.1.6.iso"
+      checksum  "aljdflkjflajkf..."
+      action    :add
+    end
+
+    razor_image "rz_mk_prod-image.0.9.1.6" do
+      type  "mk"
+      url   "http://mirror.example.com/images/rz_mk_prod-image.0.9.1.6.iso"
+    end
+
+**Note:** the add action is default, so the second example is a more common
+usage.
+
+##### Adding An Operating System Image
+
+    razor_image "precise64" do
+      type      "os"
+      url       "http://mirror.example.com/images/ubuntu-amd64-12.04.iso"
+      checksum  "lkjdfoidadba..."
+      version   "12.04"
+    end
+
+    razor_image "sl64-6.3" do
+      url     "http://mirror.example.com/images/scientific-amd64-6.3.iso"
+      version 6.3
+    end
+
+**Note:** the default for type is `"os"` so this can be omitted in most cases.
+The version attribute can also be a Float.
 
 ## <a name="development"></a> Development
 
@@ -194,7 +366,9 @@ limitations under the License.
 [librarian]:    https://github.com/applicationsonline/librarian#readme
 [mongodb_cb]:   http://community.opscode.com/cookbooks/mongodb
 [nodejs_cb]:    http://community.opscode.com/cookbooks/nodejs
+[razor_site]:   https://github.com/puppetlabs/Razor
+[tftp_cb]:      http://community.opscode.com/cookbooks/tftp
 
 [fnichol]:      https://github.com/fnichol
-[repo]:         https://github.com/fnichol/chef-user
-[issues]:       https://github.com/fnichol/chef-user/issues
+[repo]:         https://github.com/fnichol/chef-razor
+[issues]:       https://github.com/fnichol/chef-razor/issues
