@@ -70,11 +70,15 @@ def image_path
 end
 
 def all_images
-  Mixlib::ShellOut.new("#{razor_bin} image get").
-    run_command.
-    stdout.
-    split("\n\n").
-    collect{ |x| Hash[*(x.split(/\n|=>/) - ['Images']).collect{|y| y.strip!}] }
+  begin
+    Mixlib::ShellOut.new("#{razor_bin} image get").
+      run_command.
+      stdout.
+      split("\n\n").
+      collect{ |x| Hash[*(x.split(/\n|=>/) - ['Images']).collect{|y| y.strip!}] }
+  rescue ArgumentError
+    {}
+  end
 end
 
 def os_image_present?
