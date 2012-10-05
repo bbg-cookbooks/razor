@@ -149,6 +149,11 @@ on Ubuntu 10.04 nodes.
 Installs and configures the Razor codebase and service. This recipe is
 included in the [default](#recipes-default) recipe.
 
+### <a name="recipes-add-images"></a> add_images
+
+Installs images in the Razor service (driven off the `images` attribute). This
+recipe is included in the [default](#recipes-default) recipe.
+
 ## <a name="attributes"></a> Attributes
 
 ### <a name="attributes-bind-address"></a> bind_address
@@ -168,6 +173,27 @@ The default is `"127.0.0.1"`.
 The micro kernel checkin interval in seconds.
 
 The default is `60`.
+
+### <a name="attributes-images"></a> images
+
+A Hash of Razor images to be added. The hash key will correspond to the image
+`name` attribute and the value will be a hash of other attributes to be fed
+to the [razor_image](#lwrps-image) LWRP. For example:
+
+    node['razor']['images'] = {
+      'razor-mk' => {
+        'type'    => 'mk',
+        'url'     => 'http://fdqn.com/razor-mk.iso',
+        'action'  => 'add'
+      },
+      'precise64' => {
+        'url'       => 'http://example.com/precise64.iso',
+        'checksum'  => 'abcabc...',
+        'version'   => '12.04'
+      }
+    }
+
+The default is an empty hash: `Hash.new`.
 
 ### <a name="attributes-ruby-system-packages"></a> ruby_system_packages
 

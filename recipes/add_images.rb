@@ -19,13 +19,14 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
+images = node['razor']['images'] || Hash.new
 
-include_recipe 'razor::tftp'
-include_recipe 'razor::tftp_files'
-include_recipe 'razor::mongodb'
-include_recipe 'razor::nodejs'
-include_recipe 'razor::ruby_from_package'
-include_recipe 'razor::app'
-include_recipe 'razor::add_images'
+images.each_pair do |name, image|
+  razor_image name do
+    %w[type url version checksum].each do |attr|
+      send(attr, image[attr]) if attr
+    end
+
+    action image['action'].to_sym if image['action']
+  end
+end
