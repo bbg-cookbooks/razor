@@ -66,7 +66,8 @@ def file_name
 end
 
 def image_path
-  ::File.join(Chef::Config[:file_cache_path], "razor", file_name)
+  ::File.join(Chef::Config[:file_cache_path], "razor",
+              new_resource.name, file_name)
 end
 
 def all_images
