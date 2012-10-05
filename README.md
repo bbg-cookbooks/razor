@@ -65,7 +65,7 @@ Or to reference the Git version:
 
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'razor',
-      :git => 'git://github.com/fnichol/chef-user.git', :ref => 'v0.1.0'
+      :git => 'git://github.com/fnichol/chef-razor.git', :ref => 'v0.1.0'
     END_OF_CHEFFILE
     librarian-chef install
 
