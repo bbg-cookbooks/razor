@@ -84,7 +84,9 @@ end
 def os_image_present?
   all_images.find do |i|
     i['Type'] == "OS Install" &&
-      i['ISO Filename'] == new_resource.url.split('/').last
+      i['ISO Filename'] == new_resource.url.split('/').last &&
+      i['OS Name'] == new_resource.name &&
+      i['OS Version'] == new_resource.version
   end
 end
 
