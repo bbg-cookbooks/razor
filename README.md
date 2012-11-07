@@ -65,7 +65,7 @@ Or to reference the Git version:
 
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'razor',
-      :git => 'git://github.com/fnichol/chef-razor.git', :ref => 'v0.1.0'
+      :git => 'git://github.com/fnichol/chef-razor.git', :ref => 'v0.2.0'
     END_OF_CHEFFILE
     librarian-chef install
 
@@ -77,7 +77,7 @@ plugin:
 
     gem install knife-github-cookbooks
     cd chef-repo
-    knife cookbook github install fnichol/chef-razor/v0.1.0
+    knife cookbook github install fnichol/chef-razor/v0.2.0
 
 ### <a name="installation-gitsubmodule"></a> As a Git Submodule
 
@@ -96,7 +96,7 @@ If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
 Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
 
     cd chef-repo/cookbooks
-    curl -Ls https://github.com/fnichol/chef-razor/tarball/v0.1.0 | tar xfz - && \
+    curl -Ls https://github.com/fnichol/chef-razor/tarball/v0.2.0 | tar xfz - && \
       mv fnichol-chef-razor-* razor
 
 ### <a name="installation-platform"></a> From the Opscode Community Platform
