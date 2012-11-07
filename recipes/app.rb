@@ -34,7 +34,7 @@ git install_path do
   action      :sync
 end
 
-execute "#{bundle_cmd} install" do
+execute "#{bundle_cmd} install --without test" do
   cwd install_path
 end
 
