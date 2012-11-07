@@ -47,7 +47,7 @@ default['razor']['bundle_cmd']  = 'bundle'
 default['razor']['npm_cmd']     = 'npm'
 
 default['razor']['app']['git_url']  = 'https://github.com/puppetlabs/Razor.git'
-default['razor']['app']['git_rev']  = '0.7.0'
+default['razor']['app']['git_rev']  = 'master'
 
 default['razor']['rubygems_source']['version'] = src_version = "1.8.24"
 default['razor']['rubygems_source']['url']     =
