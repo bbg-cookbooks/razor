@@ -35,11 +35,13 @@ end
 ].each do |tftp_file|
   cookbook_file ::File.join(tftp_root, tftp_file) do
     source  tftp_file
+    mode    "0644"
   end
 end
 
 template ::File.join(tftp_root, "razor.ipxe") do
   source  "razor.ipxe.erb"
+  mode    "0644"
   variables({
     :address => node['razor']['bind_address']
   })
