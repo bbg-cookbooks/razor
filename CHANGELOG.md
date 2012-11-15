@@ -1,4 +1,11 @@
-## 0.2.1 (unreleased)
+## 0.2.3 (unreleased)
+
+
+## 0.2.2 (November 15, 2012)
+
+## Bug fixes
+
+* Ensure tftp files are group/world readable. ([@fnichol][])
 
 
 ## 0.2.0 (November 7, 2012)
