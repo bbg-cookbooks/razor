@@ -32,6 +32,8 @@ git install_path do
   repository  git_url
   revision    git_rev
   action      :sync
+
+  notifies :restart, "service[razor]"
 end
 
 execute "#{bundle_cmd} install --without test" do
