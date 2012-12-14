@@ -1,4 +1,0 @@
-cookbook "razor" do
-  runtimes []
-  lint false
-end

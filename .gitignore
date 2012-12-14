@@ -1,4 +1,7 @@
 Gemfile.lock
+Berksfile.lock
+.vagrant
+.bundle/
 tmp/
-.rvmrc
-test/kitchen/.kitchen/
+.jamie/
+.jamie.local.yml
