@@ -26,6 +26,6 @@ Array(node['razor']['ruby_system_packages']).each do |pkg|
   package pkg
 end
 
-include_recipe "razor::rubygems_from_source" if lucid?
+include_recipe "razor::_rubygems_from_source" if lucid?
 
 gem_package "bundler"

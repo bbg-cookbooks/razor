@@ -111,45 +111,50 @@ Installs the full Razor stack with all dependencies.
 
 Most users will want to use this recipe.
 
-### <a name="recipes-tftp"></a> tftp
+### <a name="recipes-tftp"></a> \_tftp
 
 Installs a tftp server. This recipe is included in the
 [default](#recipes-default) recipe.
 
-### <a name="recipes-tftp-files"></a> tftp_files
+### <a name="recipes-tftp-files"></a> \_tftp_files
 
 Installs files and configuration needed for PXE booting and Razor
 bootstraping. This recipe is included in the [default](#recipes-default)
 recipe.
 
-### <a name="recipes-mongodb"></a> mongodb
+### <a name="recipes-mongodb"></a> \_mongodb
 
 Installs a MongoDB server (from packages). This recipe is included in the
 [default](#recipes-default) recipe.
 
-### <a name="recipes-nodejs"></a> nodejs
+### <a name="recipes-postgresql"></a> \_postgresql
+
+Installs the PostgreSQL client libraries. This recipe is included in the
+[default](#recipes-default) recipe.
+
+### <a name="recipes-nodejs"></a> \_nodejs
 
 Installs Node.js and npm (from packages). This recipe is included in the
 [default](#recipes-default) recipe.
 
-### <a name="recipes-ruby-from-package"></a> ruby_from_package
+### <a name="recipes-ruby-from-package"></a> \_ruby_from_package
 
 Installs Ruby (from system packages) and the Bundler gem. This recipe is
 included in the [default](#recipes-default) recipe.
 
-### <a name="recipes-rubygems-from-source"></a> rubygems_from_source
+### <a name="recipes-rubygems-from-source"></a> \_rubygems_from_source
 
 Installs Rubygems from source on older Debian/Ubuntu platforms that ship a
 crippled Rubygems package. This recipe is included in the
 [ruby_from_package](#recipes-ruby-from-package) recipe and will only be used
 on Ubuntu 10.04 nodes.
 
-### <a name="recipes-app"></a> app
+### <a name="recipes-app"></a> \_app
 
 Installs and configures the Razor codebase and service. This recipe is
 included in the [default](#recipes-default) recipe.
 
-### <a name="recipes-add-images"></a> add_images
+### <a name="recipes-add-images"></a> \_add_images
 
 Installs images in the Razor service (driven off the `images` attribute). This
 recipe is included in the [default](#recipes-default) recipe.
