@@ -397,6 +397,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+[berkshelf]:    http://berkshelf.com/
 [build_essential_cb]: http://community.opscode.com/cookbooks/build-essential
 [chef_repo]:    https://github.com/opscode/chef-repo
 [cheffile]:     https://github.com/applicationsonline/librarian/blob/master/lib/librarian/chef/templates/Cheffile
