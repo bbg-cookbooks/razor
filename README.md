@@ -1,4 +1,6 @@
-# <a name="title"></a> chef-razor
+# <a name="title"></a> Razor Chef Cookbook
+
+[![Build Status](https://secure.travis-ci.org/bbg-cookcooks/razor.png?branch=master)](http://travis-ci.org/bbg-cookbooks/razor)
 
 ## <a name="description"></a> Description
 
@@ -19,7 +21,7 @@ then compose a custom run\_list of the child recipes described
 
 ### <a name="requirements-chef"></a> Chef
 
-Tested on 10.12.0 but newer and older version should work just fine. File an
+Tested on 10.14.4 but newer and older version should work just fine. File an
 [issue][issues] if this isn't the case.
 
 ### <a name="requirements-platform"></a> Platform
@@ -46,62 +48,68 @@ this cookbook. All the methods listed below assume a tagged version release
 is the target, but omit the tags to get the head of development. A valid
 Chef repository structure like the [Opscode repo][chef_repo] is also assumed.
 
+### <a name="installation-community"></a> From the Opscode Community Site
+
+To install this cookbook from the Opscode Community Site, use the *knife*
+command:
+
+    knife cookbook site install razor
+
+### <a name="installation-berkshelf"></a> Using Berkshelf
+
+[Berkshelf][berkshelf] is a cookbook dependency manager and development
+workflow assistant. To install Berkshelf:
+
+    cd chef-repo
+    gem install berkshelf
+    berks init
+
+To use the Opscode Community Site version:
+
+    echo "cookbook 'razor'" >> Berksfile
+    berks install
+
+Or to reference the GitHub version:
+
+    repo="bbg-cookbooks/razor"
+    latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+    | ruby -rjson -e '
+      j = JSON.parse(STDIN.read);
+      puts j.map { |t| t["ref"].split("/").last }.sort.last
+    ')
+    cat >> Berksfile <<END_OF_BERKSFILE
+    cookbook 'razor',
+      :git => 'git://github.com/$repo.git', :branch => '$latest_release'
+    END_OF_BERKSFILE
+    berks install
+
 ### <a name="installation-librarian"></a> Using Librarian-Chef
 
 [Librarian-Chef][librarian] is a bundler for your Chef cookbooks.
-Include a reference to the cookbook in a [Cheffile][cheffile] and run
-`librarian-chef install`. To install Librarian-Chef:
+To install Librarian-Chef:
 
-    gem install librarian
     cd chef-repo
+    gem install librarian
     librarian-chef init
 
-To use the Opscode platform version:
+To use the Opscode Community Site version:
 
     echo "cookbook 'razor'" >> Cheffile
     librarian-chef install
 
-Or to reference the Git version:
+Or to reference the GitHub version:
 
+    repo="bbg-cookbooks/razor"
+    latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+    | ruby -rjson -e '
+      j = JSON.parse(STDIN.read);
+      puts j.map { |t| t["ref"].split("/").last }.sort.last
+    ')
     cat >> Cheffile <<END_OF_CHEFFILE
     cookbook 'razor',
-      :git => 'git://github.com/fnichol/chef-razor.git', :ref => 'v0.2.2'
+      :git => 'git://github.com/$repo.git', :ref => '$latest_release'
     END_OF_CHEFFILE
     librarian-chef install
-
-### <a name="installation-kgc"></a> Using knife-github-cookbooks
-
-The [knife-github-cookbooks][kgc] gem is a plugin for *knife* that supports
-installing cookbooks directly from a GitHub repository. To install with the
-plugin:
-
-    gem install knife-github-cookbooks
-    cd chef-repo
-    knife cookbook github install fnichol/chef-razor/v0.2.2
-
-### <a name="installation-gitsubmodule"></a> As a Git Submodule
-
-A common practice (which is getting dated) is to add cookbooks as Git
-submodules. This is accomplishes like so:
-
-    cd chef-repo
-    git submodule add git://github.com/fnichol/chef-razor.git cookbooks/razor
-    git submodule init && git submodule update
-
-**Note:** the head of development will be linked here, not a tagged release.
-
-### <a name="installation-tarball"></a> As a Tarball
-
-If the cookbook needs to downloaded temporarily just to be uploaded to a Chef
-Server or Opscode Hosted Chef, then a tarball installation might fit the bill:
-
-    cd chef-repo/cookbooks
-    curl -Ls https://github.com/fnichol/chef-razor/tarball/v0.2.2 | tar xfz - && \
-      mv fnichol-chef-razor-* razor
-
-### <a name="installation-platform"></a> From the Opscode Community Platform
-
-...coming soon...
 
 ## <a name="recipes"></a> Recipes
 
@@ -203,7 +211,7 @@ The default is an empty hash: `Hash.new`.
 ### <a name="attributes-ruby-system-packages"></a> ruby_system_packages
 
 An Array of system packages which will install the Ruby runtime. The
-defaults are set automatically based on platform and platform_version but
+defaults are set automatically based on platform and platform\_version but
 can be overridden in needed.
 
 ### <a name="attributes-npm-packages"></a> npm_packages
@@ -401,5 +409,5 @@ limitations under the License.
 [tftp_cb]:      http://community.opscode.com/cookbooks/tftp
 
 [fnichol]:      https://github.com/fnichol
-[repo]:         https://github.com/fnichol/chef-razor
-[issues]:       https://github.com/fnichol/chef-razor/issues
+[repo]:         https://github.com/bbg-cookbooks/razor
+[issues]:       https://github.com/bbg-cookbooks/razor/issues
