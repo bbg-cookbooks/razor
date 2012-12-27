@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-def ruby_system_packages
+def default_ruby_system_packages
   case node['platform']
   when 'ubuntu'
     pkgs  = %w[ openssl libreadline6 libreadline6-dev
@@ -33,13 +33,13 @@ def ruby_system_packages
   end
 end
 
-default['razor']['bind_address']      = ipaddress
+default['razor']['bind_address']      = node['ipaddress']
 default['razor']['mongodb_address']   = "127.0.0.1"
 default['razor']['checkin_interval']  = 60
 
 default['razor']['images'] = Hash.new
 
-default['razor']['ruby_system_packages']  = ruby_system_packages
+default['razor']['ruby_system_packages']  = self.default_ruby_system_packages
 default['razor']['npm_packages']          = %w[express@2.5.11 mime]
 default['razor']['install_path']          = '/opt/razor'
 
