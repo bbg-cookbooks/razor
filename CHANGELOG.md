@@ -1,4 +1,18 @@
-## 0.2.3 (unreleased)
+## 0.3.1 (unreleased)
+
+
+## 0.3.0 (December 27, 2012)
+
+## Bug fixes
+
+* Add postgresql cookbook for new Gemfile dependency (pg gem). ([@fnichol][])
+
+### Improvements
+
+* Updates to README. ([@fnichol][])
+* Use an underscore in recipe names that are composed in razor::default.
+  ([@fnichol][])
+* [FC044]: Avoid bare attribute keys. ([@fnichol][])
 
 
 ## 0.2.2 (November 15, 2012)
