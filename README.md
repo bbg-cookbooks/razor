@@ -39,6 +39,7 @@ This cookbook depends on the following external cookbooks:
 * [git][git_cb]
 * [tftp][tftp_cb]
 * [mongodb][mongodb_cb]
+* [postgresql][postgresql_cb]
 * [nodejs][nodejs_cb]
 
 ## <a name="installation"></a> Installation
@@ -406,6 +407,7 @@ limitations under the License.
 [librarian]:    https://github.com/applicationsonline/librarian#readme
 [mongodb_cb]:   http://community.opscode.com/cookbooks/mongodb
 [nodejs_cb]:    http://community.opscode.com/cookbooks/nodejs
+[postgresql_cb]: http://community.opscode.com/cookbooks/postgresql
 [razor_site]:   https://github.com/puppetlabs/Razor
 [tftp_cb]:      http://community.opscode.com/cookbooks/tftp
 
