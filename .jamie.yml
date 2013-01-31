@@ -1,5 +1,5 @@
 ---
-default_driver: vagrant
+driver_config: vagrant
 
 platforms:
 - name: ubuntu-12.04
@@ -19,5 +19,4 @@ suites:
 - name: standard
   run_list:
   - recipe[razor]
-  attributes:
-    razor: 
+  attributes: {}
