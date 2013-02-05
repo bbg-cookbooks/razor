@@ -1,6 +1,8 @@
 source :rubygems
 
 gem 'rake'
+gem 'minitest'
+gem 'fauxhai'
 gem 'foodcritic', :platforms => :ruby_19
 
 group :integration do
