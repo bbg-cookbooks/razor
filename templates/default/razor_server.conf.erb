@@ -30,8 +30,8 @@ noun: config
 persist_mode: :<%= @persist_mode %>
 persist_host: <%= @persist_host %>
 persist_port: <%= @persist_port %>
-persist_username: <%= @persist_username %>
-persist_password: <%= @persist_password %>
+persist_username: <%= @persist_username || '""' %>
+persist_password: <%= @persist_password || '""' %>
 persist_timeout: <%= @persist_timeout %>
 register_timeout: 120
 rz_mk_boot_debug_level: ""
