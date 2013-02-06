@@ -33,9 +33,43 @@ def default_ruby_system_packages
   end
 end
 
+def default_mongo_port
+  port_attr = node['mongodb'] && node['mongodb']['port']
+  port_attr.nil? ? 27017 : port_attr
+end
+
+def default_postrgres_port
+  port_attr = node['postgresql'] && node['postgresql']['config'] &&
+    node['postgresql']['config']['port']
+  port_attr.nil? ? 5432 : port_attr
+end
+
 default['razor']['bind_address']      = node['ipaddress']
-default['razor']['mongodb_address']   = "127.0.0.1"
 default['razor']['checkin_interval']  = 60
+
+default['razor']['persist_mode'] = "mongo"
+default['razor']['persist_host'] = "127.0.0.1"
+default['razor']['persist_timeout'] = 10
+
+case node['razor']['persist_mode']
+when 'postgres' then
+  default['razor']['persist_port']      = self.default_postrgres_port
+  default['razor']['persist_username']  = "razor"
+  default['razor']['persist_password']  = "project_razor"
+
+  default['razor']['postgres']['local_server']  = true
+  default['razor']['mongo']['local_server']     = false
+else
+  default['razor']['persist_port'] = self.default_mongo_port
+
+  default['razor']['postgres']['local_server']  = false
+  default['razor']['mongo']['local_server']     = true
+
+  # TODO: deprecate this attribute in 1.0.0 release
+  if node['razor']['mongodb_address']
+    default['razor']['persist_host'] = node['razor']['mongodb_address']
+  end
+end
 
 default['razor']['images'] = Hash.new
 

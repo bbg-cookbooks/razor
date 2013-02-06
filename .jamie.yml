@@ -16,7 +16,16 @@ platforms:
   - recipe[apt]
 
 suites:
-- name: standard
+- name: mongo
   run_list:
   - recipe[razor]
   attributes: {}
+- name: postgres
+  run_list:
+  - recipe[razor]
+  attributes:
+    razor:
+      persist_mode: postgres
+    postgresql:
+      password:
+        postgres: razor

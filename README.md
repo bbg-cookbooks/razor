@@ -133,12 +133,16 @@ recipe.
 
 ### <a name="recipes-mongodb"></a> \_mongodb
 
-Installs a MongoDB server (from packages). This recipe is included in the
+Installs a MongoDB server (from packages) if the `"mongo"` persistance mode is
+selected and the `mongo/local_server` attribute is set to a truthy value
+(otherwise the recipe is effectively skipped). This recipe is included in the
 [default](#recipes-default) recipe.
 
 ### <a name="recipes-postgresql"></a> \_postgresql
 
-Installs the PostgreSQL client libraries. This recipe is included in the
+Installs a PostgreSQL server if the `"postgres"` persistent mode is selected
+and the `postgres/local_server` attribute is set to a truthy value. Otherwise
+the PostgreSQL client libraries are installed.  This recipe is included in the
 [default](#recipes-default) recipe.
 
 ### <a name="recipes-nodejs"></a> \_nodejs
@@ -176,17 +180,95 @@ IP address to which the Razor web services are bound.
 
 The default is set to `node['ipaddress']`.
 
-### <a name="attributes-mongodb-address"></a> mongodb_address
-
-IP address which has a running MongoDB service.
-
-The default is `"127.0.0.1"`.
-
 ### <a name="attributes-checkin-interval"></a> checkin_interval
 
 The micro kernel checkin interval in seconds.
 
 The default is `60`.
+
+### <a name="attributes-persist-mode"></a> persist_mode
+
+The persistence mode that Razor will use. Currently the two supported values are `"mongo"` and `"postgres"`.
+
+The default is `"mongo"`.
+
+**Note:** The is some upstream Razor code changes needed to support PostgreSQL
+authentication via a username and password. In the meantime, your mileage may
+vary when using the `"postgres"` persistence mode.
+
+### <a name="attributes-persist-host"></a> persist_host
+
+The hostname or IP adrress of the persistence service.
+
+The default is `"127.0.0.1"`.
+
+### <a name="attributes-persist-port"></a> persist_port
+
+The port number of the persistence service.
+
+The default depends on which [persist_mode](#attributes-persist-mode) is
+selected:
+
+* `"mongo"`: the value set will be the value of `node['mongodb']['port']` if
+  set and falling back to `27017`.
+* `"postgres"`: the value set will be the value of
+  `node['postgresql']['config']['port']` if set and falling back to `5432`.
+
+### <a name="attributes-persist-username"></a> persist_username
+
+The username used when authenticating to the persistence service.
+
+The default depends on which [persist_mode](#attributes-persist-mode) is
+selected:
+
+* `"mongo"`: a value is not set as the default localhost server does not
+  require authentication.
+* `"postgres"`: defaults to `"razor"`.
+
+### <a name="attributes-persist-password"></a> persist_password
+
+The password used when authenticating to the persistence service.
+
+The default depends on which [persist_mode](#attributes-persist-mode) is
+selected:
+
+* `"mongo"`: a value is not set as the default localhost server does not
+  require authentication.
+* `"postgres"`: defaults to `"project_razor"`.
+
+**Note** do not rely on a default password if at all possible. Securing your
+persistence serivce with adequate password strength is your responsibility.
+
+### <a name="attributes-persist-timeout"></a> persist_timeout
+
+The connection timeout (in secondss) used when communicating with the
+persistence service.
+
+The default is `10`.
+
+### <a name="attributes-mongo-local-server"></a> mongo/local_server
+
+Whether or not to install a local MongoDB server on this node. If you want
+Razor to use an external MongoDB server then set this value to something
+"untruthy" such as `false` or `nil`.
+
+The default depends on which [persist_mode](#attributes-persist-mode) is
+selected:
+
+* `"mongo"`: defaults to `true`.
+* `"postgres"`: defaults to `false`.
+
+### <a name="attributes-postgres-local-server"></a> postgres/local_server
+
+Whether or not to install a local PostgreSQL server on this node. If you want
+Razor to use an external PostgreSQL server then set this value to something
+"untruthy" such as `false` or `nil`.
+
+The default depends on which [persist_mode](#attributes-persist-mode) is
+selected:
+
+* `"mongo"`: defaults to `false`.
+* `"postgres"`: defaults to `true`.
 
 ### <a name="attributes-images"></a> images
 
@@ -262,6 +344,16 @@ The default is `"1.8.24"`.
 The URL containing Rubygems source which will be compiled (when necessary).
 
 The default is set based on the Rubygems version attribute above.
+
+### <a name="attributes-mongodb-address"></a> \[deprecated\] mongodb_address
+
+IP address which has a running MongoDB service.
+
+The default is `"127.0.0.1"`.
+
+**Note** this value will set the [persist_host](#attributes-persist-host)
+attribute for backwards compatibility. This attribute will be removed in a 1.0
+release so please migrate to using `persist_host`.
 
 ## <a name="lwrps"></a> Resources and Providers
 
