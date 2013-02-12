@@ -29,7 +29,7 @@ Tested on 10.14.4 but newer and older version should work just fine. File an
 The following platforms have been tested with this cookbook, meaning that the
 recipes run on these platforms without error:
 
-* ubuntu (10.04/12.04)
+* ubuntu (10.04/12.04/12.10)
 
 ### <a name="requirements-cookbooks"></a> Cookbooks
 
