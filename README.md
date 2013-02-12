@@ -21,7 +21,7 @@ then compose a custom run\_list of the child recipes described
 
 ### <a name="requirements-chef"></a> Chef
 
-Tested on 10.14.4 but newer and older version should work just fine. File an
+Tested on 10.14.4 and 11.2 but newer and older version should work just fine. File an
 [issue][issues] if this isn't the case.
 
 ### <a name="requirements-platform"></a> Platform
