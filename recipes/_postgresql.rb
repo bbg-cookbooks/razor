@@ -19,4 +19,31 @@
 # limitations under the License.
 #
 
-include_recipe "postgresql::client"
+if node['razor']['persist_mode'] == 'postgres' && node['razor']['postgres']['local_server']
+  persist_username = node['razor']['persist_username']
+  persist_password = node['razor']['persist_password']
+
+  connection_info = {
+    :host     => '127.0.0.1',
+    :port     => node['postgresql']['config']['port'],
+    :username => 'postgres',
+    :password => node['postgresql']['password']['postgres']
+  }
+
+  include_recipe "postgresql::server"
+  include_recipe "postgresql::ruby"
+
+  postgresql_database_user persist_username do
+    connection  connection_info
+    password    persist_password
+    action      :create
+  end
+
+  postgresql_database 'project_razor' do
+    connection  connection_info
+    owner       persist_username
+    action      :create
+  end
+else
+  include_recipe "postgresql::client"
+end

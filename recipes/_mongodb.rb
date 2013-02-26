@@ -19,5 +19,7 @@
 # limitations under the License.
 #
 
-include_recipe "mongodb::10gen_repo"
-include_recipe "mongodb"
+if node['razor']['persist_mode'] == 'mongo' && node['razor']['mongo']['local_server']
+  include_recipe "mongodb::10gen_repo"
+  include_recipe "mongodb"
+end

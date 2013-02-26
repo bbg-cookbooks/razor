@@ -1,5 +1,5 @@
 ---
-default_driver: vagrant
+driver_plugin: vagrant
 
 platforms:
 - name: ubuntu-12.04
@@ -16,8 +16,16 @@ platforms:
   - recipe[apt]
 
 suites:
-- name: standard
+- name: mongo
+  run_list:
+  - recipe[razor]
+  attributes: {}
+- name: postgres
   run_list:
   - recipe[razor]
   attributes:
-    razor: 
+    razor:
+      persist_mode: postgres
+    postgresql:
+      password:
+        postgres: razor

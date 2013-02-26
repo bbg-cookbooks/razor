@@ -25,7 +25,12 @@ git_url           = node['razor']['app']['git_url']
 git_rev           = node['razor']['app']['git_rev']
 bundle_cmd        = node['razor']['bundle_cmd']
 npm_cmd           = node['razor']['npm_cmd']
-mongodb_address   = node['razor']['mongodb_address']
+persist_mode      = node['razor']['persist_mode']
+persist_host      = node['razor']['persist_host']
+persist_port      = node['razor']['persist_port']
+persist_username  = node['razor']['persist_username']
+persist_password  = node['razor']['persist_password']
+persist_timeout   = node['razor']['persist_timeout']
 checkin_interval  = node['razor']['checkin_interval']
 
 git install_path do
@@ -63,7 +68,12 @@ template ::File.join(install_path, %w[conf razor_server.conf]) do
   mode    "0755"
   variables({
     :address              => bind_address,
-    :persist_host         => mongodb_address,
+    :persist_mode         => persist_mode,
+    :persist_host         => persist_host,
+    :persist_port         => persist_port,
+    :persist_username     => persist_username,
+    :persist_password     => persist_password,
+    :persist_timeout      => persist_timeout,
     :directory            => install_path,
     :mk_checkin_interval  => checkin_interval
   })
