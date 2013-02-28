@@ -330,7 +330,7 @@ The default is `"https://github.com/puppetlabs/Razor.git"`.
 
 The Git reference/branch to check out.
 
-The default is `"master"`. Valid values could be Git SHA hashes, branch names,
+The default is `"0.9.0"`. Valid values could be Git SHA hashes, branch names,
 and `"master"` for tracking development.
 
 ### <a name="attributes-rubygems-source-version"></a> rubygems_source/version
