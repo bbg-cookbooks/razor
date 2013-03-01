@@ -1,12 +1,12 @@
-## 0.3.3 (unreleased)
+## 0.3.3 / Unreleased
 
 
-## 0.3.2 (December 27, 2012)
+## 0.3.2 / 2012-12-27
 
 * Sync version in Changelog/metadata.rb/Git tag. ([@fnichol][])
 
 
-## 0.3.0 (December 27, 2012)
+## 0.3.0 / 2012-12-27
 
 ## Bug fixes
 
@@ -20,14 +20,14 @@
 * [FC044]: Avoid bare attribute keys. ([@fnichol][])
 
 
-## 0.2.2 (November 15, 2012)
+## 0.2.2 / 2012-11-15
 
 ## Bug fixes
 
 * Ensure tftp files are group/world readable. ([@fnichol][])
 
 
-## 0.2.0 (November 7, 2012)
+## 0.2.0 / 2012-11-07
 
 ### Attribute default updates
 
@@ -41,7 +41,7 @@
   ([@fnichol][])
 
 
-## 0.1.0 (October 4, 2012)
+## 0.1.0 / 2012-09-04
 
 The initial release.
 
