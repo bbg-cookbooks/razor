@@ -13,13 +13,13 @@ Rake::TestTask.new do |t|
 end
 
 begin
-  require 'jamie/rake_tasks'
-  Jamie::RakeTasks.new
+  require 'kitchen/rake_tasks'
+  Kitchen::RakeTasks.new
 rescue LoadError
-  puts ">>>>> Jamie gem not loaded, omitting tasks" unless ENV['CI']
+  puts ">>>>> test-kitchen gem not loaded, omitting tasks" unless ENV['CI']
 end
 
 desc "Run all test suites"
-task :test_all => [:default, :jamie]
+task :test_all => [:default, :kitchen]
 
 task :default => [:foodcritic, :unit]

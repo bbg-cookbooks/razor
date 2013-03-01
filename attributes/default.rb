@@ -28,7 +28,8 @@ def default_ruby_system_packages
                 ncurses-dev automake libtool bison ssl-cert ]
     case node['platform_version']
     when '10.04' then %w[ ruby ruby-dev libopenssl-ruby1.8 ] + pkgs
-    when ['12.04', '12.10'] then %w[ ruby1.9.1 ruby1.9.1-dev ] + pkgs
+    when '12.04', '12.10' then %w[ ruby1.9.1 ruby1.9.1-dev ] + pkgs
+    else pkgs
     end
   end
 end

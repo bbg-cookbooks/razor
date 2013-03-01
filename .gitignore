@@ -3,5 +3,5 @@ Berksfile.lock
 .vagrant
 .bundle/
 tmp/
-.jamie/
-.jamie.local.yml
+.kitchen/
+.kitchen.local.yml

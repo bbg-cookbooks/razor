@@ -8,6 +8,6 @@ gem 'chef', '~> 10.18.2'
 
 group :integration do
   gem 'berkshelf', '>= 1.0.0'
-  gem 'jamie', '~> 0.1.0.beta3'
-  gem 'jamie-vagrant'
+  gem 'test-kitchen',    :git => 'git://github.com/opscode/test-kitchen.git', :ref => '1.0'
+  gem 'kitchen-vagrant', :git => 'git://github.com/opscode/kitchen-vagrant.git'
 end
