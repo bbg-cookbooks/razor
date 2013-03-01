@@ -1,4 +1,15 @@
-## 0.3.3 / Unreleased
+## 0.4.0 / 2013-03-01
+
+### New features
+
+* Add support for Postgres persistence plugin. ([@fnichol][])
+* Add support for Ubuntu 12.10. ([@sbates][])
+
+### Improvements
+
+* Update razor/app/git_rev attribute to '0.9.0' tag. ([@fnichol][])
+* Convert cookbook testing from Jamie to Test Kitchen (1.0 alpha).
+  ([@fnichol][])
 
 
 ## 0.3.2 / 2012-12-27
@@ -46,3 +57,4 @@
 The initial release.
 
 [@fnichol]: https://github.com/fnichol
+[@sbates]: https://github.com/sbates
