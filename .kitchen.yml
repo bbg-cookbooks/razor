@@ -27,8 +27,7 @@ suites:
     razor:
       persist_mode: postgres
       app:
-        git_url: git://github.com/fnichol/Razor.git
-        git_rev: bbg-stable
+        git_rev: 778e87e294159fd427ce3b526b251e78a3654a72
     postgresql:
       password:
         postgres: razor
