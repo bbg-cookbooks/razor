@@ -33,3 +33,6 @@ suites:
     postgresql:
       password:
         postgres: razor
+- name: lwrps
+  run_list:
+  - recipe[test::lwrps]

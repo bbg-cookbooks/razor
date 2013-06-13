@@ -425,6 +425,15 @@ release so please migrate to using `persist_host`.
       </td>
       <td><code>nil</code></td>
     </tr>
+    <tr>
+      <td>iso_path</td>
+      <td>
+        An optional path where the downloaded ISO image will be stored before
+        being added to Razor. If no value is provided a path inside the
+        <code>Chef::Config[:file_cache_path]</code> will be computed.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
   </tbody>
 </table>
 
@@ -454,6 +463,7 @@ usage.
       url       "http://mirror.example.com/images/ubuntu-amd64-12.04.iso"
       checksum  "lkjdfoidadba..."
       version   "12.04"
+      iso_path  "/data/razor_images"
     end
 
     razor_image "sl64-6.3" do

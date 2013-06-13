@@ -23,7 +23,7 @@ images = node['razor']['images'] || Hash.new
 
 images.each_pair do |name, image|
   razor_image name do
-    %w[type url version checksum].each do |attr|
+    %w[type url version checksum iso_path].each do |attr|
       send(attr, image[attr]) if attr
     end
 

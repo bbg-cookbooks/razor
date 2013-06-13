@@ -66,8 +66,12 @@ def file_name
 end
 
 def image_path
-  ::File.join(Chef::Config[:file_cache_path], "razor",
-              new_resource.name, file_name)
+  if new_resource.iso_path
+    ::File.join(new_resource.iso_path, new_resource.name, file_name)
+  else
+    ::File.join(Chef::Config[:file_cache_path], "razor",
+      new_resource.name, file_name)
+  end
 end
 
 def all_images

@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: razor
-# Resource:: image
+# Cookbook Name:: test
+# Recipe:: lwrps
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
-# Copyright 2012, Blue Box Group, LLC
+# Copyright 2013, Blue Box Group, LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,12 @@
 # limitations under the License.
 #
 
-actions :add
+include_recipe "razor"
 
-attribute :name,        :kind_of => String, :name_attribute => true
-attribute :type,        :equal_to => ["mk", "os"], :default => "os"
-attribute :url,         :kind_of => String, :required => true
-attribute :version,     :kind_of => [String, Float]
-attribute :checksum,    :kind_of => String
-attribute :iso_path,    :kind_of => String
-
-def initialize(*args)
-  super
-  @action = :add
+razor_image "tinycorelinux-core-x86" do
+  type "os"
+  url "http://ftp.vim.org/os/Linux/distr/tinycorelinux/4.x/x86/release/Core-4.7.7.iso"
+  checksum "58d3919d16f6bcf91253f56200d80df71072c4ed478da59c5c925d54117fee4d"
+  version "4.7.7"
+  iso_path "/var/razor/images"
 end
