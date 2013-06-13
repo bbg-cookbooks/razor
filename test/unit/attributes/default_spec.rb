@@ -1,6 +1,8 @@
 require 'minitest/autorun'
+require 'chef/resource'
 require 'chef/node'
 require 'chef/platform'
+require 'chef/dsl'
 require 'fauxhai'
 
 describe 'User::Attributes::Default' do

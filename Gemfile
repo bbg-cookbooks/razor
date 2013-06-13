@@ -4,7 +4,9 @@ gem 'rake'
 gem 'minitest', '~> 4.7'
 gem 'fauxhai'
 gem 'foodcritic'
-gem 'chef', '~> 10.18.2'
+
+# allow CI to override the version of Chef for matrix testing
+gem 'chef', (ENV['CHEF_VERSION'] || '>= 0.10.10')
 
 group :development do
   gem 'emeril'
