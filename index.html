@@ -1,0 +1,603 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Razor Chef Cookbook by bbg-cookbooks</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Razor Chef Cookbook</h1>
+        <p class="header">Chef cookbook to install and manage Razor. An LWRP is provided to manage OS and micro kernel images.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/bbg-cookbooks/razor/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bbg-cookbooks/razor/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/bbg-cookbooks/razor">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/bbg-cookbooks">bbg-cookbooks</a></p>
+
+
+      </header>
+      <section>
+        <p><a href="https://travis-ci.org/bbg-cookbooks/razor"><img src="https://travis-ci.org/bbg-cookbooks/razor.png?branch=master" alt="Build Status"></a></p>
+
+<h2>
+<a name="-description" class="anchor" href="#-description"><span class="octicon octicon-link"></span></a><a name="description"></a> Description</h2>
+
+<p>Chef cookbook to install and manage <a href="https://github.com/puppetlabs/Razor">Razor</a>, a power control,
+provisioning, and management application designed to deploy both bare-metal
+and virtual computer resources. An LWRP is provided to manage OS and
+micro kernel images.</p>
+
+<h2>
+<a name="-usage" class="anchor" href="#-usage"><span class="octicon octicon-link"></span></a><a name="usage"></a> Usage</h2>
+
+<p>Include <code>recipe[razor]</code> in your run_list to install the Razor service and its
+dependencies. If you wish to modify or alter the details of the installation
+(i.e. using a different mongodb cookbook, installing nodejs from source, etc.),
+then compose a custom run_list of the child recipes described
+<a href="#recipes">below</a>.</p>
+
+<h2>
+<a name="-requirements" class="anchor" href="#-requirements"><span class="octicon octicon-link"></span></a><a name="requirements"></a> Requirements</h2>
+
+<h3>
+<a name="-chef" class="anchor" href="#-chef"><span class="octicon octicon-link"></span></a><a name="requirements-chef"></a> Chef</h3>
+
+<p>Tested on 10.14.4 and 11.2 but newer and older version should work just fine. File an
+<a href="https://github.com/bbg-cookbooks/razor/issues">issue</a> if this isn't the case.</p>
+
+<h3>
+<a name="-platform" class="anchor" href="#-platform"><span class="octicon octicon-link"></span></a><a name="requirements-platform"></a> Platform</h3>
+
+<p>The following platforms have been tested with this cookbook, meaning that the
+recipes run on these platforms without error:</p>
+
+<ul>
+<li>ubuntu (10.04/12.04/12.10)</li>
+</ul><h3>
+<a name="-cookbooks" class="anchor" href="#-cookbooks"><span class="octicon octicon-link"></span></a><a name="requirements-cookbooks"></a> Cookbooks</h3>
+
+<p>This cookbook depends on the following external cookbooks:</p>
+
+<ul>
+<li><a href="http://community.opscode.com/cookbooks/build-essential">build-essential</a></li>
+<li><a href="http://community.opscode.com/cookbooks/git">git</a></li>
+<li><a href="http://community.opscode.com/cookbooks/tftp">tftp</a></li>
+<li><a href="http://community.opscode.com/cookbooks/mongodb">mongodb</a></li>
+<li><a href="http://community.opscode.com/cookbooks/postgresql">postgresql</a></li>
+<li><a href="http://community.opscode.com/cookbooks/nodejs">nodejs</a></li>
+</ul><h2>
+<a name="-installation" class="anchor" href="#-installation"><span class="octicon octicon-link"></span></a><a name="installation"></a> Installation</h2>
+
+<p>Depending on the situation and use case there are several ways to install
+this cookbook. All the methods listed below assume a tagged version release
+is the target, but omit the tags to get the head of development. A valid
+Chef repository structure like the <a href="https://github.com/opscode/chef-repo">Opscode repo</a> is also assumed.</p>
+
+<h3>
+<a name="-from-the-opscode-community-site" class="anchor" href="#-from-the-opscode-community-site"><span class="octicon octicon-link"></span></a><a name="installation-community"></a> From the Opscode Community Site</h3>
+
+<p>To install this cookbook from the Opscode Community Site, use the <em>knife</em>
+command:</p>
+
+<pre><code>knife cookbook site install razor
+</code></pre>
+
+<h3>
+<a name="-using-berkshelf" class="anchor" href="#-using-berkshelf"><span class="octicon octicon-link"></span></a><a name="installation-berkshelf"></a> Using Berkshelf</h3>
+
+<p><a href="http://berkshelf.com/">Berkshelf</a> is a cookbook dependency manager and development
+workflow assistant. To install Berkshelf:</p>
+
+<pre><code>cd chef-repo
+gem install berkshelf
+berks init
+</code></pre>
+
+<p>To use the Opscode Community Site version:</p>
+
+<pre><code>echo "cookbook 'razor'" &gt;&gt; Berksfile
+berks install
+</code></pre>
+
+<p>Or to reference the GitHub version:</p>
+
+<pre><code>repo="bbg-cookbooks/razor"
+latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+| ruby -rjson -e '
+  j = JSON.parse(STDIN.read);
+  puts j.map { |t| t["ref"].split("/").last }.sort.last
+')
+cat &gt;&gt; Berksfile &lt;&lt;END_OF_BERKSFILE
+cookbook 'razor',
+  :git =&gt; 'git://github.com/$repo.git', :branch =&gt; '$latest_release'
+END_OF_BERKSFILE
+berks install
+</code></pre>
+
+<h3>
+<a name="-using-librarian-chef" class="anchor" href="#-using-librarian-chef"><span class="octicon octicon-link"></span></a><a name="installation-librarian"></a> Using Librarian-Chef</h3>
+
+<p><a href="https://github.com/applicationsonline/librarian#readme">Librarian-Chef</a> is a bundler for your Chef cookbooks.
+To install Librarian-Chef:</p>
+
+<pre><code>cd chef-repo
+gem install librarian
+librarian-chef init
+</code></pre>
+
+<p>To use the Opscode Community Site version:</p>
+
+<pre><code>echo "cookbook 'razor'" &gt;&gt; Cheffile
+librarian-chef install
+</code></pre>
+
+<p>Or to reference the GitHub version:</p>
+
+<pre><code>repo="bbg-cookbooks/razor"
+latest_release=$(curl -s https://api.github.com/repos/$repo/git/refs/tags \
+| ruby -rjson -e '
+  j = JSON.parse(STDIN.read);
+  puts j.map { |t| t["ref"].split("/").last }.sort.last
+')
+cat &gt;&gt; Cheffile &lt;&lt;END_OF_CHEFFILE
+cookbook 'razor',
+  :git =&gt; 'git://github.com/$repo.git', :ref =&gt; '$latest_release'
+END_OF_CHEFFILE
+librarian-chef install
+</code></pre>
+
+<h2>
+<a name="-recipes" class="anchor" href="#-recipes"><span class="octicon octicon-link"></span></a><a name="recipes"></a> Recipes</h2>
+
+<h3>
+<a name="-default" class="anchor" href="#-default"><span class="octicon octicon-link"></span></a><a name="recipes-default"></a> default</h3>
+
+<p>Installs the full Razor stack with all dependencies.</p>
+
+<p>Most users will want to use this recipe.</p>
+
+<h3>
+<a name="-_tftp" class="anchor" href="#-_tftp"><span class="octicon octicon-link"></span></a><a name="recipes-tftp"></a> _tftp</h3>
+
+<p>Installs a tftp server. This recipe is included in the
+<a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_tftp_files" class="anchor" href="#-_tftp_files"><span class="octicon octicon-link"></span></a><a name="recipes-tftp-files"></a> _tftp_files</h3>
+
+<p>Installs files and configuration needed for PXE booting and Razor
+bootstraping. This recipe is included in the <a href="#recipes-default">default</a>
+recipe.</p>
+
+<h3>
+<a name="-_mongodb" class="anchor" href="#-_mongodb"><span class="octicon octicon-link"></span></a><a name="recipes-mongodb"></a> _mongodb</h3>
+
+<p>Installs a MongoDB server (from packages) if the <code>"mongo"</code> persistance mode is
+selected and the <code>mongo/local_server</code> attribute is set to a truthy value
+(otherwise the recipe is effectively skipped). This recipe is included in the
+<a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_postgresql" class="anchor" href="#-_postgresql"><span class="octicon octicon-link"></span></a><a name="recipes-postgresql"></a> _postgresql</h3>
+
+<p>Installs a PostgreSQL server if the <code>"postgres"</code> persistent mode is selected
+and the <code>postgres/local_server</code> attribute is set to a truthy value. Otherwise
+the PostgreSQL client libraries are installed.  This recipe is included in the
+<a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_nodejs" class="anchor" href="#-_nodejs"><span class="octicon octicon-link"></span></a><a name="recipes-nodejs"></a> _nodejs</h3>
+
+<p>Installs Node.js and npm (from packages). This recipe is included in the
+<a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_ruby_from_package" class="anchor" href="#-_ruby_from_package"><span class="octicon octicon-link"></span></a><a name="recipes-ruby-from-package"></a> _ruby_from_package</h3>
+
+<p>Installs Ruby (from system packages) and the Bundler gem. This recipe is
+included in the <a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_rubygems_from_source" class="anchor" href="#-_rubygems_from_source"><span class="octicon octicon-link"></span></a><a name="recipes-rubygems-from-source"></a> _rubygems_from_source</h3>
+
+<p>Installs Rubygems from source on older Debian/Ubuntu platforms that ship a
+crippled Rubygems package. This recipe is included in the
+<a href="#recipes-ruby-from-package">ruby_from_package</a> recipe and will only be used
+on Ubuntu 10.04 nodes.</p>
+
+<h3>
+<a name="-_app" class="anchor" href="#-_app"><span class="octicon octicon-link"></span></a><a name="recipes-app"></a> _app</h3>
+
+<p>Installs and configures the Razor codebase and service. This recipe is
+included in the <a href="#recipes-default">default</a> recipe.</p>
+
+<h3>
+<a name="-_add_images" class="anchor" href="#-_add_images"><span class="octicon octicon-link"></span></a><a name="recipes-add-images"></a> _add_images</h3>
+
+<p>Installs images in the Razor service (driven off the <code>images</code> attribute). This
+recipe is included in the <a href="#recipes-default">default</a> recipe.</p>
+
+<h2>
+<a name="-attributes" class="anchor" href="#-attributes"><span class="octicon octicon-link"></span></a><a name="attributes"></a> Attributes</h2>
+
+<h3>
+<a name="-bind_address" class="anchor" href="#-bind_address"><span class="octicon octicon-link"></span></a><a name="attributes-bind-address"></a> bind_address</h3>
+
+<p>IP address to which the Razor web services are bound.</p>
+
+<p>The default is set to <code>node['ipaddress']</code>.</p>
+
+<h3>
+<a name="-checkin_interval" class="anchor" href="#-checkin_interval"><span class="octicon octicon-link"></span></a><a name="attributes-checkin-interval"></a> checkin_interval</h3>
+
+<p>The micro kernel checkin interval in seconds.</p>
+
+<p>The default is <code>60</code>.</p>
+
+<h3>
+<a name="-persist_mode" class="anchor" href="#-persist_mode"><span class="octicon octicon-link"></span></a><a name="attributes-persist-mode"></a> persist_mode</h3>
+
+<p>The persistence mode that Razor will use. Currently the two supported values are <code>"mongo"</code> and <code>"postgres"</code>.</p>
+
+<p>The default is <code>"mongo"</code>.</p>
+
+<p><strong>Note:</strong> The is some upstream Razor code changes needed to support PostgreSQL
+authentication via a username and password. In the meantime, your mileage may
+vary when using the <code>"postgres"</code> persistence mode.</p>
+
+<h3>
+<a name="-persist_host" class="anchor" href="#-persist_host"><span class="octicon octicon-link"></span></a><a name="attributes-persist-host"></a> persist_host</h3>
+
+<p>The hostname or IP adrress of the persistence service.</p>
+
+<p>The default is <code>"127.0.0.1"</code>.</p>
+
+<h3>
+<a name="-persist_port" class="anchor" href="#-persist_port"><span class="octicon octicon-link"></span></a><a name="attributes-persist-port"></a> persist_port</h3>
+
+<p>The port number of the persistence service.</p>
+
+<p>The default depends on which <a href="#attributes-persist-mode">persist_mode</a> is
+selected:</p>
+
+<ul>
+<li>
+<code>"mongo"</code>: the value set will be the value of <code>node['mongodb']['port']</code> if
+set and falling back to <code>27017</code>.</li>
+<li>
+<code>"postgres"</code>: the value set will be the value of
+<code>node['postgresql']['config']['port']</code> if set and falling back to <code>5432</code>.</li>
+</ul><h3>
+<a name="-persist_username" class="anchor" href="#-persist_username"><span class="octicon octicon-link"></span></a><a name="attributes-persist-username"></a> persist_username</h3>
+
+<p>The username used when authenticating to the persistence service.</p>
+
+<p>The default depends on which <a href="#attributes-persist-mode">persist_mode</a> is
+selected:</p>
+
+<ul>
+<li>
+<code>"mongo"</code>: a value is not set as the default localhost server does not
+require authentication.</li>
+<li>
+<code>"postgres"</code>: defaults to <code>"razor"</code>.</li>
+</ul><h3>
+<a name="-persist_password" class="anchor" href="#-persist_password"><span class="octicon octicon-link"></span></a><a name="attributes-persist-password"></a> persist_password</h3>
+
+<p>The password used when authenticating to the persistence service.</p>
+
+<p>The default depends on which <a href="#attributes-persist-mode">persist_mode</a> is
+selected:</p>
+
+<ul>
+<li>
+<code>"mongo"</code>: a value is not set as the default localhost server does not
+require authentication.</li>
+<li>
+<code>"postgres"</code>: defaults to <code>"project_razor"</code>.</li>
+</ul><p><strong>Note</strong> do not rely on a default password if at all possible. Securing your
+persistence serivce with adequate password strength is your responsibility.</p>
+
+<h3>
+<a name="-persist_timeout" class="anchor" href="#-persist_timeout"><span class="octicon octicon-link"></span></a><a name="attributes-persist-timeout"></a> persist_timeout</h3>
+
+<p>The connection timeout (in secondss) used when communicating with the
+persistence service.</p>
+
+<p>The default is <code>10</code>.</p>
+
+<h3>
+<a name="-mongolocal_server" class="anchor" href="#-mongolocal_server"><span class="octicon octicon-link"></span></a><a name="attributes-mongo-local-server"></a> mongo/local_server</h3>
+
+<p>Whether or not to install a local MongoDB server on this node. If you want
+Razor to use an external MongoDB server then set this value to something
+"untruthy" such as <code>false</code> or <code>nil</code>.</p>
+
+<p>The default depends on which <a href="#attributes-persist-mode">persist_mode</a> is
+selected:</p>
+
+<ul>
+<li>
+<code>"mongo"</code>: defaults to <code>true</code>.</li>
+<li>
+<code>"postgres"</code>: defaults to <code>false</code>.</li>
+</ul><h3>
+<a name="-postgreslocal_server" class="anchor" href="#-postgreslocal_server"><span class="octicon octicon-link"></span></a><a name="attributes-postgres-local-server"></a> postgres/local_server</h3>
+
+<p>Whether or not to install a local PostgreSQL server on this node. If you want
+Razor to use an external PostgreSQL server then set this value to something
+"untruthy" such as <code>false</code> or <code>nil</code>.</p>
+
+<p>The default depends on which <a href="#attributes-persist-mode">persist_mode</a> is
+selected:</p>
+
+<ul>
+<li>
+<code>"mongo"</code>: defaults to <code>false</code>.</li>
+<li>
+<code>"postgres"</code>: defaults to <code>true</code>.</li>
+</ul><h3>
+<a name="-images" class="anchor" href="#-images"><span class="octicon octicon-link"></span></a><a name="attributes-images"></a> images</h3>
+
+<p>A Hash of Razor images to be added. The hash key will correspond to the image
+<code>name</code> attribute and the value will be a hash of other attributes to be fed
+to the <a href="#lwrps-image">razor_image</a> LWRP. For example:</p>
+
+<pre><code>node['razor']['images'] = {
+  'razor-mk' =&gt; {
+    'type'    =&gt; 'mk',
+    'url'     =&gt; 'http://fdqn.com/razor-mk.iso',
+    'action'  =&gt; 'add'
+  },
+  'precise64' =&gt; {
+    'url'       =&gt; 'http://example.com/precise64.iso',
+    'checksum'  =&gt; 'abcabc...',
+    'version'   =&gt; '12.04'
+  }
+}
+</code></pre>
+
+<p>The default is an empty hash: <code>Hash.new</code>.</p>
+
+<h3>
+<a name="-ruby_system_packages" class="anchor" href="#-ruby_system_packages"><span class="octicon octicon-link"></span></a><a name="attributes-ruby-system-packages"></a> ruby_system_packages</h3>
+
+<p>An Array of system packages which will install the Ruby runtime. The
+defaults are set automatically based on platform and platform_version but
+can be overridden in needed.</p>
+
+<h3>
+<a name="-npm_packages" class="anchor" href="#-npm_packages"><span class="octicon octicon-link"></span></a><a name="attributes-npm-packages"></a> npm_packages</h3>
+
+<p>An Array of npm packages to be installed. The defaults are set automatically
+but can be overridden in needed.</p>
+
+<h3>
+<a name="-install_path" class="anchor" href="#-install_path"><span class="octicon octicon-link"></span></a><a name="attributes-install-path"></a> install_path</h3>
+
+<p>The install base path of the Razor codebase.</p>
+
+<p>The default is <code>"/opt/razor"</code>.</p>
+
+<h3>
+<a name="-bundle_cmd" class="anchor" href="#-bundle_cmd"><span class="octicon octicon-link"></span></a><a name="attributes-bundle-cmd"></a> bundle_cmd</h3>
+
+<p>The bundle command which will be used to install Ruby gems.</p>
+
+<p>The default is <code>"bundle"</code> (using <code>$PATH</code> lookup).</p>
+
+<h3>
+<a name="-npm_cmd" class="anchor" href="#-npm_cmd"><span class="octicon octicon-link"></span></a><a name="attributes-npm-cmd"></a> npm_cmd</h3>
+
+<p>The npm command which will be used to install npm packages.</p>
+
+<p>The default is <code>"npm"</code> (using <code>$PATH</code> lookup).</p>
+
+<h3>
+<a name="-appgit_url" class="anchor" href="#-appgit_url"><span class="octicon octicon-link"></span></a><a name="attributes-app-git-url"></a> app/git_url</h3>
+
+<p>The Git URL for the Razor codebase.</p>
+
+<p>The default is <code>"https://github.com/puppetlabs/Razor.git"</code>.</p>
+
+<h3>
+<a name="-appgit_rev" class="anchor" href="#-appgit_rev"><span class="octicon octicon-link"></span></a><a name="attributes-app-git-rev"></a> app/git_rev</h3>
+
+<p>The Git reference/branch to check out.</p>
+
+<p>The default is <code>"0.9.0"</code>. Valid values could be Git SHA hashes, branch names,
+and <code>"master"</code> for tracking development.</p>
+
+<h3>
+<a name="-rubygems_sourceversion" class="anchor" href="#-rubygems_sourceversion"><span class="octicon octicon-link"></span></a><a name="attributes-rubygems-source-version"></a> rubygems_source/version</h3>
+
+<p>The version of Rubygems to be compiled (when necessary).</p>
+
+<p>The default is <code>"1.8.24"</code>.</p>
+
+<h3>
+<a name="-rubygems_sourceurl" class="anchor" href="#-rubygems_sourceurl"><span class="octicon octicon-link"></span></a><a name="attributes-rubygems-source-url"></a> rubygems_source/url</h3>
+
+<p>The URL containing Rubygems source which will be compiled (when necessary).</p>
+
+<p>The default is set based on the Rubygems version attribute above.</p>
+
+<h3>
+<a name="-deprecated-mongodb_address" class="anchor" href="#-deprecated-mongodb_address"><span class="octicon octicon-link"></span></a><a name="attributes-mongodb-address"></a> [deprecated] mongodb_address</h3>
+
+<p>IP address which has a running MongoDB service.</p>
+
+<p>The default is <code>"127.0.0.1"</code>.</p>
+
+<p><strong>Note</strong> this value will set the <a href="#attributes-persist-host">persist_host</a>
+attribute for backwards compatibility. This attribute will be removed in a 1.0
+release so please migrate to using <code>persist_host</code>.</p>
+
+<h2>
+<a name="-resources-and-providers" class="anchor" href="#-resources-and-providers"><span class="octicon octicon-link"></span></a><a name="lwrps"></a> Resources and Providers</h2>
+
+<h3>
+<a name="-razor_image" class="anchor" href="#-razor_image"><span class="octicon octicon-link"></span></a><a name="lwrps-image"></a> razor_image</h3>
+
+<h4>
+<a name="-actions" class="anchor" href="#-actions"><span class="octicon octicon-link"></span></a><a name="lwrps-image-actions"></a> Actions</h4>
+
+<table>
+<tr>
+<th>Action</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+<tr>
+<td>add</td>
+      <td>Add the microkernel or operating system image to razor.</td>
+      <td>Yes</td>
+    </tr>
+</table><h4>
+<a name="-attributes-1" class="anchor" href="#-attributes-1"><span class="octicon octicon-link"></span></a><a name="lwrps-image-attributes"></a> Attributes</h4>
+
+<table>
+<tr>
+<th>Attribute</th>
+      <th>Description</th>
+      <th>Default Value</th>
+    </tr>
+<tr>
+<td>name</td>
+      <td>
+        <b>Name attribute:</b> The logical name to use for the image.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>type</td>
+      <td>
+        The type of image. Valid values are <code>"mk"</code> for micro kernel
+        images and <code>"os"</code> for operating system images.
+      </td>
+      <td><code>"os"</code></td>
+    </tr>
+<tr>
+<td>url</td>
+      <td>
+        HTTP URL containing the image ISO.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>version</td>
+      <td>
+        The version to use for <code>"os"</code> images only.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>checksum</td>
+      <td>
+        An optional SHA-256 checksum for the ISO (for added verification).
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+<tr>
+<td>iso_path</td>
+      <td>
+        An optional path where the downloaded ISO image will be stored before
+        being added to Razor. If no value is provided a path inside the
+        <code>Chef::Config[:file_cache_path]</code> will be computed.
+      </td>
+      <td><code>nil</code></td>
+    </tr>
+</table><h4>
+<a name="-examples" class="anchor" href="#-examples"><span class="octicon octicon-link"></span></a><a name="lwrps-image-examples"></a> Examples</h4>
+
+<h5>
+<a name="adding-a-micro-kernel-image" class="anchor" href="#adding-a-micro-kernel-image"><span class="octicon octicon-link"></span></a>Adding A Micro Kernel Image</h5>
+
+<pre><code>razor_image "rz_mk_prod-image.0.9.1.6" do
+  type      "mk"
+  url       "http://mirror.example.com/images/rz_mk_prod-image.0.9.1.6.iso"
+  checksum  "aljdflkjflajkf..."
+  action    :add
+end
+
+razor_image "rz_mk_prod-image.0.9.1.6" do
+  type  "mk"
+  url   "http://mirror.example.com/images/rz_mk_prod-image.0.9.1.6.iso"
+end
+</code></pre>
+
+<p><strong>Note:</strong> the add action is default, so the second example is a more common
+usage.</p>
+
+<h5>
+<a name="adding-an-operating-system-image" class="anchor" href="#adding-an-operating-system-image"><span class="octicon octicon-link"></span></a>Adding An Operating System Image</h5>
+
+<pre><code>razor_image "precise64" do
+  type      "os"
+  url       "http://mirror.example.com/images/ubuntu-amd64-12.04.iso"
+  checksum  "lkjdfoidadba..."
+  version   "12.04"
+  iso_path  "/data/razor_images"
+end
+
+razor_image "sl64-6.3" do
+  url     "http://mirror.example.com/images/scientific-amd64-6.3.iso"
+  version 6.3
+end
+</code></pre>
+
+<p><strong>Note:</strong> the default for type is <code>"os"</code> so this can be omitted in most cases.
+The version attribute can also be a Float.</p>
+
+<h2>
+<a name="-development" class="anchor" href="#-development"><span class="octicon octicon-link"></span></a><a name="development"></a> Development</h2>
+
+<ul>
+<li>Source hosted at <a href="https://github.com/bbg-cookbooks/razor">GitHub</a>
+</li>
+<li>Report issues/Questions/Feature requests on <a href="https://github.com/bbg-cookbooks/razor/issues">GitHub Issues</a>
+</li>
+</ul><p>Pull requests are very welcome! Make sure your patches are well tested.
+Ideally create a topic branch for every separate change you make.</p>
+
+<h2>
+<a name="-license-and-author" class="anchor" href="#-license-and-author"><span class="octicon octicon-link"></span></a><a name="license"></a> License and Author</h2>
+
+<p>Author:: <a href="https://github.com/fnichol">Fletcher Nichol</a> (<a href="mailto:fnichol@nichol.ca">fnichol@nichol.ca</a>)</p>
+
+<p>Copyright 2012, Blue Box Group, LLC</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
