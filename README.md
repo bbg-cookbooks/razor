@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/bbg-cookbooks/razor.png?branch=master)](https://travis-ci.org/bbg-cookbooks/razor)
 
+* Website: http://bbg-cookbooks.github.io/razor
+* Opscode Community Site: http://community.opscode.com/cookbooks/razor
+* Source Code: https://github.com/bbg-cookbooks/razor
+
 ## <a name="description"></a> Description
 
 Chef cookbook to install and manage [Razor][razor_site], a power control,
