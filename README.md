@@ -1,6 +1,6 @@
 # <a name="title"></a> Razor Chef Cookbook
 
-[![Build Status](https://secure.travis-ci.org/bbg-cookcooks/razor.png?branch=master)](http://travis-ci.org/bbg-cookbooks/razor)
+[![Build Status](https://travis-ci.org/bbg-cookbooks/razor.png?branch=master)](https://travis-ci.org/bbg-cookbooks/razor)
 
 ## <a name="description"></a> Description
 
