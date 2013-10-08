@@ -80,18 +80,3 @@ template ::File.join(install_path, %w[conf razor_server.conf]) do
 
   notifies :restart, "service[razor]"
 end
-
-template "/etc/init.d/razor" do
-  source  "razor.erb"
-  mode    "0755"
-  variables({
-    :directory => install_path
-  })
-
-  notifies :restart, "service[razor]"
-end
-
-service "razor" do
-  supports  :status => true, :restart => true, :reload => false
-  action    [ :enable, :start ]
-end
