@@ -55,12 +55,8 @@ directory "/usr/local/bin" do
   recursive true
 end
 
-template "/usr/local/bin/razor" do
-  source  "razor_bin.erb"
-  mode    "0755"
-  variables({
-    :directory => install_path
-  })
+link "/usr/local/bin/razor" do
+  to ::File.join(install_path, "bin", "razor")
 end
 
 template ::File.join(install_path, %w[conf razor_server.conf]) do
