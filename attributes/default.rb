@@ -81,7 +81,7 @@ default['razor']['install_path']          = '/opt/razor'
 default['razor']['bundle_cmd']  = 'bundle'
 default['razor']['npm_cmd']     = 'npm'
 
-default['razor']['app']['git_url']  = 'https://github.com/puppetlabs/Razor.git'
+default['razor']['app']['git_url']  = 'https://github.com/razor-provisioning/Razor.git'
 default['razor']['app']['git_rev']  = '0.9.0'
 
 default['razor']['rubygems_source']['version'] = src_version = "1.8.24"
