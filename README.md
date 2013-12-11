@@ -328,7 +328,7 @@ The default is `"npm"` (using `$PATH` lookup).
 
 The Git URL for the Razor codebase.
 
-The default is `"https://github.com/puppetlabs/Razor.git"`.
+The default is `"https://github.com/razor-provisioning/Razor.git"`.
 
 ### <a name="attributes-app-git-rev"></a> app/git_rev
 
