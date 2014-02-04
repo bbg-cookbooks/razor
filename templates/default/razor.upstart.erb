@@ -1,0 +1,14 @@
+description   "Razor"
+author        "Guilhem Lettron <guilhem@lettron.fr>"
+ 
+start on runlevel [2345]
+stop on runlevel [!2345]
+ 
+respawn              # respawn the service if it dies
+ 
+#script
+#  export RBENV_ROOT="/opt/rbenv"    # set required rbenv variable
+#  exec ${RBENV_ROOT}/bin/rbenv exec <%= ::File.join(@install_path, "bin", "razor_daemon.rb") %> start --ontop
+#end script
+
+exec <%= ::File.join(@install_path, "bin", "razor_daemon.rb") %> start --ontop

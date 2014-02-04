@@ -87,3 +87,10 @@ default['razor']['app']['git_rev']  = '0.9.0'
 default['razor']['rubygems_source']['version'] = src_version = "1.8.24"
 default['razor']['rubygems_source']['url']     =
   "http://files.rubyforge.vm.bytemark.co.uk/rubygems/rubygems-#{src_version}.tgz"
+
+case node['platform']
+when "ubuntu"
+  default['razor']['service_type'] = "upstart"
+else
+  default['razor']['service_type'] = "sysvinit"
+end
