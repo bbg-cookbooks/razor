@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: razor
-# Recipe:: default
+# Recipe:: _rbenv
 #
 # Author:: Fletcher Nichol (<fnichol@nichol.ca>)
 #
@@ -19,14 +19,12 @@
 # limitations under the License.
 #
 
-include_recipe 'git'
-include_recipe 'build-essential'
+include_recipe "rbenv::default"
+include_recipe "rbenv::ruby_build"
+include_recipe "rbenv::rbenv_bundler"
 
-include_recipe 'razor::_tftp'
-include_recipe 'razor::_tftp_files'
-include_recipe 'razor::_mongodb'
-include_recipe 'razor::_postgresql'
-include_recipe 'razor::_nodejs'
-include_recipe "razor::_rbenv"
-include_recipe 'razor::_app'
-include_recipe 'razor::_add_images'
+rbenv_ruby node['razor']['ruby_ver']
+
+rbenv_gem "bundler" do
+  ruby_version node['razor']['ruby_ver']
+end

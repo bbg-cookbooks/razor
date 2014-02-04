@@ -41,7 +41,9 @@ git install_path do
   notifies :restart, "service[razor]"
 end
 
-execute "#{bundle_cmd} install --without test" do
+rbenv_execute "Install razor" do
+  command "bundle install --without test && rbenv rehash"
+  ruby_version node['razor']['ruby_ver']
   cwd install_path
 end
 
@@ -59,7 +61,7 @@ link "/usr/local/bin/razor" do
   to ::File.join(install_path, "bin", "razor")
 end
 
-template ::File.join(install_path, %w[conf razor_server.conf]) do
+template ::File.join(install_path, "conf", "razor_server.conf") do
   source  "razor_server.conf.erb"
   mode    "0755"
   variables({
